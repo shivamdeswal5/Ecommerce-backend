@@ -1,15 +1,21 @@
-import { IsInt, IsOptional, IsString, Min, Max, IsUUID } from 'class-validator';
+import { IsUUID, IsString, IsNotEmpty, IsInt, Min, Max } from 'class-validator';
 
 export class CreateReviewDto {
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
   @IsInt()
   @Min(1)
   @Max(5)
   rating: number;
 
-  @IsOptional()
   @IsString()
-  comment?: string;
+  comment: string;
 
   @IsUUID()
-  productId: string;
+  userId: string;
+
+  @IsUUID()
+  productId: string;
 }
