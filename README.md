@@ -1,8 +1,8 @@
-Project Summary
+## Project Summary
 This project is a backend REST API for an e-commerce platform built using NestJS and TypeORM. 
 It manages users, products, categories, orders, reviews, and their relationships, allowing CRUD operations and complex queries like top-reviewed products
 
-Entities & Their Relationships
+## Entities & Their Relationships
 
 1. User
 
@@ -54,8 +54,8 @@ Belongs to one User (Many-to-one with User)
 
 Belongs to one Product (Many-to-one with Product)
 
-Postman Link
+## Postman Link
 https://www.postman.com/shivamdeswal/workspace/nestbasics/collection/45022719-ebebfee8-f24e-40ee-9a4f-e14f9918eaf2?action=share&source=copy-link&creator=45022719
 
-Transaction 
+## Transaction 
 For Transaction used typeorm-transactional package but that need to be fixed
