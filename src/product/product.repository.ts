@@ -7,4 +7,6 @@ export class ProductRepository extends Repository<Product> {
   constructor(private readonly dataSource: DataSource) {
     super(Product, dataSource.createEntityManager());
   }
+
+
 }

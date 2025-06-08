@@ -34,5 +34,5 @@ export class ReviewService {
   async remove(id: number): Promise<void> {
     const review = await this.findOne(id);
     await this.reviewRepository.remove(review);
-  }
+  }
 }

@@ -32,4 +32,10 @@ export class ProductController {
   remove(@Param('id') id: string) {
     return this.productService.remove(id);
   }
+
+  @Get('analytics/top-reviewed')
+  async getTopReviewed() {
+    const result = await this.productService.getTopReviewedProducts();
+    return result;
+  }
 }

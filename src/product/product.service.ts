@@ -115,4 +115,21 @@ async findAll(query: FindProductsDto) {
     }
     return await this.productRepository.remove(product);
   }
+
+async getTopReviewedProducts(limit = 5) {
+  return this.productRepository.createQueryBuilder('product')
+  .leftJoin('product.reviews', 'review')
+  .leftJoin('product.category', 'category')
+  .select('product.id', 'productId')
+  .addSelect('product.name', 'name')
+  .addSelect('AVG(review.rating)', 'averageRating')
+  .addSelect('COUNT(review.id)', 'totalReviews')
+  .addSelect('category.name', 'categoryName')
+  .groupBy('product.id')
+  .addGroupBy('category.name')
+  .orderBy('COUNT(review.id)', 'DESC')
+  .limit(limit)
+  .getRawMany();
+}
+
 }
