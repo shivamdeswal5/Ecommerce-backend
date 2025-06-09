@@ -15,7 +15,9 @@ export class ProductService {
   async create(createProductDto: CreateProductDto) {
     const { categoryId, ...rest } = createProductDto;
 
-    const category = await this.categoryRepository.findOne({ where: { id: categoryId } });
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
@@ -28,56 +30,58 @@ export class ProductService {
     return await this.productRepository.save(product);
   }
 
-async findAll(query: FindProductsDto) {
-  const {
-    page = 1,
-    limit = 10,
-    search,
-    inStock,
-    minPrice,
-    maxPrice,
-    category,
-  } = query;
+  async findAll(query: FindProductsDto) {
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      inStock,
+      minPrice,
+      maxPrice,
+      category,
+    } = query;
 
-  const qb = this.productRepository.createQueryBuilder('product')
-    .leftJoinAndSelect('product.category', 'category');
+    const qb = this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category');
 
-  if (search) {
-    qb.andWhere('LOWER(product.name) LIKE LOWER(:search)', { search: `%${search}%` });
-  }
-
-  if (inStock !== undefined) {
-    if (inStock) {
-      qb.andWhere('product.stock > 0');
-    } else {
-      qb.andWhere('product.stock = 0');
+    if (search) {
+      qb.andWhere('LOWER(product.name) LIKE LOWER(:search)', {
+        search: `%${search}%`,
+      });
     }
+
+    if (inStock !== undefined) {
+      if (inStock) {
+        qb.andWhere('product.stock > 0');
+      } else {
+        qb.andWhere('product.stock = 0');
+      }
+    }
+
+    if (minPrice !== undefined) {
+      qb.andWhere('product.price >= :minPrice', { minPrice });
+    }
+
+    if (maxPrice !== undefined) {
+      qb.andWhere('product.price <= :maxPrice', { maxPrice });
+    }
+
+    if (category) {
+      qb.andWhere('product.categoryId = :category', { category });
+    }
+
+    qb.skip((page - 1) * limit).take(limit);
+
+    const [data, total] = await qb.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
-
-  if (minPrice !== undefined) {
-    qb.andWhere('product.price >= :minPrice', { minPrice });
-  }
-
-  if (maxPrice !== undefined) {
-    qb.andWhere('product.price <= :maxPrice', { maxPrice });
-  }
-
-  if (category) {
-    qb.andWhere('product.categoryId = :category', { category });
-  }
-
-  qb.skip((page - 1) * limit).take(limit);
-
-  const [data, total] = await qb.getManyAndCount();
-
-  return {
-    data,
-    total,
-    page,
-    limit,
-  };
-}
-
 
   async findOne(id: string) {
     const product = await this.productRepository.findOne({
@@ -97,7 +101,9 @@ async findAll(query: FindProductsDto) {
     }
 
     if (updateProductDto.categoryId) {
-      const category = await this.categoryRepository.findOne({ where: { id: updateProductDto.categoryId } });
+      const category = await this.categoryRepository.findOne({
+        where: { id: updateProductDto.categoryId },
+      });
       if (!category) {
         throw new NotFoundException('Category not found');
       }
@@ -116,20 +122,20 @@ async findAll(query: FindProductsDto) {
     return await this.productRepository.remove(product);
   }
 
-async getTopReviewedProducts(limit = 5) {
-  return this.productRepository.createQueryBuilder('product')
-  .leftJoin('product.reviews', 'review')
-  .leftJoin('product.category', 'category')
-  .select('product.id', 'productId')
-  .addSelect('product.name', 'name')
-  .addSelect('AVG(review.rating)', 'averageRating')
-  .addSelect('COUNT(review.id)', 'totalReviews')
-  .addSelect('category.name', 'categoryName')
-  .groupBy('product.id')
-  .addGroupBy('category.name')
-  .orderBy('COUNT(review.id)', 'DESC')
-  .limit(limit)
-  .getRawMany();
-}
-
+  async getTopReviewedProducts(limit = 5) {
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoin('product.reviews', 'review')
+      .leftJoin('product.category', 'category')
+      .select('product.id', 'productId')
+      .addSelect('product.name', 'name')
+      .addSelect('AVG(review.rating)', 'averageRating')
+      .addSelect('COUNT(review.id)', 'totalReviews')
+      .addSelect('category.name', 'categoryName')
+      .groupBy('product.id')
+      .addGroupBy('category.name')
+      .orderBy('COUNT(review.id)', 'DESC')
+      .limit(limit)
+      .getRawMany();
+  }
 }
