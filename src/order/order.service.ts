@@ -119,7 +119,9 @@ export class OrderService {
       const order = queryRunner.manager.create(Order, {
         user,
         totalPrice,
+        OrderItem: orderItemsData
       });
+      
 
       const savedOrder = await queryRunner.manager.save(Order,order);
 
