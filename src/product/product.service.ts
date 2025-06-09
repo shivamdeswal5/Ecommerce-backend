@@ -41,7 +41,7 @@ export class ProductService {
       category,
     } = query;
 
-    const qb = this.productRepository
+    const qb = this.productRepository 
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category');
 
