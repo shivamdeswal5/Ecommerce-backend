@@ -14,7 +14,7 @@ Can write many Reviews (One-to-many with Review)
 
 
 2. Address
-
+   
 Belongs to one User (Many-to-one with User)
 
 Stores user’s multiple addresses 
@@ -54,8 +54,22 @@ Belongs to one User (Many-to-one with User)
 
 Belongs to one Product (Many-to-one with Product)
 
-## Postman Link
-https://www.postman.com/shivamdeswal/workspace/nestbasics/collection/45022719-ebebfee8-f24e-40ee-9a4f-e14f9918eaf2?action=share&source=copy-link&creator=45022719
 
 ## Transaction 
 For Transaction used typeorm-transactional package but that need to be fixed
+
+## Migrations 
+1. Generate
+   npm run migration:generate
+2. Run
+   npm run migration:generate
+3. Revert
+   npm run migration:revert
+4. Create
+   npm run migration: create path
+5. Drop tables
+   npm run drop:tables
+
+
+## Postman Link
+https://www.postman.com/shivamdeswal/workspace/nestbasics/collection/45022719-ebebfee8-f24e-40ee-9a4f-e14f9918eaf2?action=share&source=copy-link&creator=45022719
