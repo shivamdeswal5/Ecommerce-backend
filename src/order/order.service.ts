@@ -146,7 +146,7 @@ export class OrderService {
       throw new NotFoundException('Error creating order');
     } finally {
       await queryRunner.release();
-      
+
     }
   }
 
@@ -165,8 +165,14 @@ export class OrderService {
     return order;
   }
 
-  async update(id: string, dto: UpdateOrderDto): Promise<Order> {
-    const order = await this.orderRepository.findOne({
+  async update(id: string, dto: UpdateOrderDto) {
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try{
+      const order = await queryRunner.manager.findOne(Order,{
       where: { id },
       relations: ['items'],
     });
@@ -176,13 +182,13 @@ export class OrderService {
     }
 
     if (order.items.length > 0) {
-      await this.orderItemRepository.remove(order.items);
+      await queryRunner.manager.remove(OrderItem,order.items);
     }
 
     const newItems: OrderItem[] = [];
 
     for (const item of dto.items) {
-      const product = await this.productRepository.findOneBy({
+      const product = await queryRunner.manager.findOneBy(Product,{
         id: item.productId,
       });
 
@@ -192,7 +198,7 @@ export class OrderService {
         );
       }
 
-      const orderItem = this.orderItemRepository.create({
+      const orderItem = queryRunner.manager.create(OrderItem,{
         order,
         product,
         quantity: item.quantity,
@@ -202,7 +208,7 @@ export class OrderService {
       newItems.push(orderItem);
     }
 
-    const savedItems = await this.orderItemRepository.save(newItems);
+    const savedItems = await queryRunner.manager.save(OrderItem,newItems);
 
     order.items = savedItems;
     order.totalPrice = savedItems.reduce(
@@ -210,7 +216,17 @@ export class OrderService {
       0,
     );
 
-    return await this.orderRepository.save(order);
+    const updatedOrder =  await queryRunner.manager.save(Order,order);
+    return updatedOrder;
+
+    }catch (error) {
+      await queryRunner.rollbackTransaction();
+      console.error('Error updating order:', error);
+      throw new NotFoundException('Error updating order');
+
+    }finally{
+      await queryRunner.release();
+    }
   }
 
   async remove(id: string) {
