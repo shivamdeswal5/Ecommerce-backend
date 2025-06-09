@@ -14,6 +14,9 @@ export class Review {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'varchar', length: 255 ,nullable: true })
+  title: string;
+
   @Column({ type: 'int' })
   rating: number;
 

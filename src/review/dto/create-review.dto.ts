@@ -17,5 +17,5 @@ export class CreateReviewDto {
   userId: string;
 
   @IsUUID()
-  productId: string;
+  productId:string;
 }
