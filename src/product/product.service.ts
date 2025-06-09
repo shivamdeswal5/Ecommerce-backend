@@ -129,7 +129,7 @@ async getTopReviewedProducts(limit = 5) {
   .addGroupBy('category.name')
   .orderBy('COUNT(review.id)', 'DESC')
   .limit(limit)
-  .getRawMany();
+  .getRawMany();
 }
 
 }
