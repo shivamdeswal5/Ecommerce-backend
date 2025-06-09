@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
 import { OrderItemRepository } from './order-item.repository';
 import { UserRepository } from '../user/user.repository';
@@ -10,6 +10,7 @@ import { Transactional } from 'typeorm-transactional';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { DataSource } from 'typeorm';
+import { error } from 'console';
 
 @Injectable()
 export class OrderService {
@@ -117,8 +118,8 @@ export class OrderService {
 
         product.stock -= item.quantity; 
         if (product.stock < 0) {
-          throw new NotFoundException(
-            `Not enough stock for product with ID ${item.productId}`,
+          throw new HttpException(
+            `Not enough stock for product with ID ${item.productId}`,404
           );
         }
         await queryRunner.manager.save(Product, product); 
@@ -208,15 +209,22 @@ export class OrderService {
         );
       }
 
+      product.stock -= item.quantity;
+      if (product.stock < 0) { 
+        throw new HttpException(
+          `Not enough stock for product with ID ${item.productId}`,404
+        );
+      }
+
       const orderItem = queryRunner.manager.create(OrderItem,{
         order,
         product,
         quantity: item.quantity,
         price: product.price,
       });
-
       newItems.push(orderItem);
     }
+
 
     const savedItems = await queryRunner.manager.save(OrderItem,newItems);
 
