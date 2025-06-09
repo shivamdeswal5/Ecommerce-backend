@@ -66,7 +66,7 @@ For Transaction used typeorm-transactional package but that need to be fixed
 3. Revert <br>
    npm run migration:revert <br>
 4. Create <br>
-   npm run migration: create path <br>
+   npm run migration:create -- ./src/database/migrations/MigrationName   <br>
 5. Drop tables <br>
    npm run drop:tables  <br>
 
