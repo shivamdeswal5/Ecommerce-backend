@@ -18,7 +18,7 @@ export class Address {
   @Column()
   fullName: string;
 
-  @Column({nullable: false})
+  @Column({nullable:false})
   phone: string;
 
   @Column()

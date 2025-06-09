@@ -26,7 +26,7 @@ import * as path from 'path';
           synchronize: false,
           logging: true,
           entities: [__dirname + '/**/entities/*.entity{.ts,.js}'],
-            migrations: [path.resolve(__dirname, '../database/migrations/*-migration.ts')],
+          migrations: [path.resolve(__dirname, '../database/migrations/*-migration.ts')],
           autoLoadEntities: true,
       }
     ),
