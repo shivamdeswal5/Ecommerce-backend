@@ -56,7 +56,7 @@ It manages users, products, categories, orders, reviews, and their relationships
 
 
 ## Transaction 
-For Transaction used typeorm-transactional package but that need to be fixed
+Used queryRunner for transaction while creating orders (initially using typeorm-transactional package for transaction but skiped that due to erros)
 
 ## Migrations 
 1. Generate <br>
