@@ -59,16 +59,16 @@ Belongs to one Product (Many-to-one with Product)
 For Transaction used typeorm-transactional package but that need to be fixed
 
 ## Migrations 
-1. Generate
-   npm run migration:generate
-2. Run
-   npm run migration:generate
-3. Revert
-   npm run migration:revert
-4. Create
-   npm run migration: create path
-5. Drop tables
-   npm run drop:tables
+1. Generate <br>
+   npm run migration:generate <br>
+2. Run <br>
+   npm run migration:generate <br>
+3. Revert <br>
+   npm run migration:revert <br>
+4. Create <br>
+   npm run migration: create path <br>
+5. Drop tables <br>
+   npm run drop:tables  <br>
 
 
 ## Postman Link
