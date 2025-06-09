@@ -114,6 +114,14 @@ export class OrderService {
           quantity: item.quantity,
           price: product.price,
         });
+
+        product.stock -= item.quantity; 
+        if (product.stock < 0) {
+          throw new NotFoundException(
+            `Not enough stock for product with ID ${item.productId}`,
+          );
+        }
+        await queryRunner.manager.save(Product, product); 
       }
 
       const order = queryRunner.manager.create(Order, {
@@ -121,7 +129,7 @@ export class OrderService {
         totalPrice,
         OrderItem: orderItemsData
       });
-      
+
 
       const savedOrder = await queryRunner.manager.save(Order,order);
 
