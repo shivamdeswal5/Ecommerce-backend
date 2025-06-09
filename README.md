@@ -70,6 +70,12 @@ Used queryRunner for transaction while creating and updating orders (initially u
 5. Drop tables <br>
    npm run drop:tables  <br>
 
+## Sample env file
+   DB_HOST= <br>
+   DB_PORT=<br>
+   DB_USERNAME=<br>
+   DB_PASSWORD=<br>
+   DB_NAME= <br>
 
 ## Postman Link
 https://www.postman.com/shivamdeswal/workspace/nestbasics/collection/45022719-ebebfee8-f24e-40ee-9a4f-e14f9918eaf2?action=share&source=copy-link&creator=45022719
