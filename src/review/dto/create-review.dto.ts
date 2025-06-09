@@ -8,10 +8,9 @@ export class CreateReviewDto {
   title: string;
 
   @ApiProperty()
-  @IsInt()
   @Min(1)
   @Max(5)
-  rating: number;
+  rating: string;
 
   @ApiProperty()
   @IsString()

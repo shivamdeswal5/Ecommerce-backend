@@ -37,7 +37,9 @@ export class ReviewService {
       .leftJoinAndSelect('review.product', 'product');
     if (search) {
       qb.andWhere(
-        ` LOWER(review.title) LIKE LOWER(:search) `,
+        ` LOWER(review.title) LIKE LOWER(:search)
+          OR LOWER(review.rating) LIKE LOWER(:search)
+         `,
         { search: `%${search}%` },
       );
     }
