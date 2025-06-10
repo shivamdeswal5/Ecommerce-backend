@@ -3,13 +3,13 @@ import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindAllUserQueryDto } from './dto/find-all-user-query.dto.ts';
-import { MailService } from '../mail/mail.service';
+import {MailService} from '../mail/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly mailService: MailService, 
+    private readonly mailService: MailService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -22,11 +22,13 @@ export class UserService {
     }
 
     const newUser = this.userRepository.create(createUserDto);
-    // await this.mailService.sendMail(
-    //   newUser.email,
-    //   'Welcome to Zenmomk',
-    //   `Hello ${newUser.firstName},\n\nThank you for registering with Zenmomk!.\n\nBest regards,\nZenmomk Team`,
-    // );  
+
+    await this.mailService.sendWelcomeEmail(
+      newUser.email,
+      'Welcome to Zenmomk',
+      `Hello ${newUser.firstName},\n\nThank you for registering with Zenmomk!.\n\nBest regards,\nZenmomk Team`,
+    );  
+
     return await this.userRepository.save(newUser);
   }
 
