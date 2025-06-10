@@ -9,6 +9,7 @@ import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
 import { ReviewModule } from './review/review.module';
+import { MailModule } from './mail/mail.module';
 import * as path from 'path';
 
 @Module({
@@ -37,6 +38,7 @@ import * as path from 'path';
     CategoryModule,
     OrderModule,
     ReviewModule,
+    MailModule,
    
   ],
   controllers: [AppController],

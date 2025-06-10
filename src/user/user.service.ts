@@ -3,10 +3,14 @@ import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindAllUserQueryDto } from './dto/find-all-user-query.dto.ts';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly mailService: MailService, 
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const existing = await this.userRepository.findOneBy({
@@ -18,6 +22,11 @@ export class UserService {
     }
 
     const newUser = this.userRepository.create(createUserDto);
+    await this.mailService.sendMail(
+      newUser.email,
+      'Welcome to Zenmomk',
+      `Hello ${newUser.firstName},\n\nThank you for registering with Zenmomk!.\n\nBest regards,\nZenmomk Team`,
+    );  
     return await this.userRepository.save(newUser);
   }
 
@@ -39,6 +48,8 @@ export class UserService {
   qb.skip((page - 1) * limit).take(limit);
 
   const [data, total] = await qb.getManyAndCount();
+
+
 
   return {
     data,
