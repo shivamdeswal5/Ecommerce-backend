@@ -22,11 +22,11 @@ export class UserService {
     }
 
     const newUser = this.userRepository.create(createUserDto);
-    await this.mailService.sendMail(
-      newUser.email,
-      'Welcome to Zenmomk',
-      `Hello ${newUser.firstName},\n\nThank you for registering with Zenmomk!.\n\nBest regards,\nZenmomk Team`,
-    );  
+    // await this.mailService.sendMail(
+    //   newUser.email,
+    //   'Welcome to Zenmomk',
+    //   `Hello ${newUser.firstName},\n\nThank you for registering with Zenmomk!.\n\nBest regards,\nZenmomk Team`,
+    // );  
     return await this.userRepository.save(newUser);
   }
 
